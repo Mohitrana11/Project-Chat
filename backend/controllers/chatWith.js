@@ -2,7 +2,9 @@ const User = require("../models/userModels");
 const Conversation = require("../models/conversation");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
+const redis = require("../utils/redisClient");
 
+// [Access Chat]---------------------------------------------
 const accessChat = catchAsyncErrors(async (req, res, next) => {
   const { userId } = req.body;
   if (!userId) {
@@ -45,32 +47,43 @@ const accessChat = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// Fetch all chats for the logged-in user
+// [Fetch all chats for the logged-in user]-------------------
 const fetchChats = catchAsyncErrors(async (req, res, next) => {
   const results = await Conversation.find({
     users: { $elemMatch: { $eq: req.user._id } },
   })
     .populate("groupAdmin", "-password")
     .populate("latestMessage")
-    .sort({ updatedAt: -1 });
+    .sort({ updatedAt: -1 })
+    .lean();
+
+  const cacheKey = `userChats:${req.user._id}`;
+  const cachedChats = await redis.get(cacheKey);
+
+  if (cachedChats) {
+    return res.status(200).json(JSON.parse(cachedChats));
+  }
 
   const populatedResults = await User.populate(results, {
     path: "latestMessage.senderId",
     select: "name email",
   });
 
+  await redis.set(cacheKey, JSON.stringify(populatedResults), "EX", 60 * 2);
+
   res.status(200).json(populatedResults);
 });
 
-// Fetch all group chats
+// [Fetch all group chats]------------------------------------
 const fetchGroups = catchAsyncErrors(async (req, res, next) => {
   const allGroups = await Conversation.find({ isGroupChat: true })
     .populate("users", "-password")
-    .populate("groupAdmin", "-password");
+    .populate("groupAdmin", "-password")
+    .lean();
   res.status(200).json(allGroups);
 });
 
-// rename the Group:
+// [Rename the Group]-----------------------------------------
 const renameGroup = catchAsyncErrors(async (req, res, next) => {
   const { chatId, chatName } = req.body;
 
@@ -84,7 +97,8 @@ const renameGroup = catchAsyncErrors(async (req, res, next) => {
     }
   )
     .populate("users", "-password")
-    .populate("groupAdmin", "-password");
+    .populate("groupAdmin", "-password")
+    .lean();
 
   if (!updatedChat) {
     return next(new Error("Chat not found", 400));
@@ -93,7 +107,7 @@ const renameGroup = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// Create a new group chat
+//[Create a new group chat]-----------------------------------
 const createGroup = catchAsyncErrors(async (req, res, next) => {
   if (!req.body.users || !req.body.name) {
     return next(new ErrorHandler("Insufficient data", 400));
@@ -125,7 +139,7 @@ const createGroup = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// Exit from a group chat
+// [Exit from a group chat]----------------------------------
 const groupExit = catchAsyncErrors(async (req, res, next) => {
   const { chatId, userId } = req.body;
 
@@ -148,7 +162,7 @@ const groupExit = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// Add a user to a group chat
+// [Add a user to a group chat]------------------------------
 const addSelfToGroup = catchAsyncErrors(async (req, res, next) => {
   const { chatId, userId } = req.body;
 

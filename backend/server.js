@@ -4,7 +4,6 @@ const PORT = process.env.PORT || 4500;
 const dbConnection = require("./config/database");
 dbConnection();
 
-// Graceful shutdown on exceptions
 process.on("uncaughtException", (err) => {
   console.error(`Error: ${err.message}`);
   process.exit(1);

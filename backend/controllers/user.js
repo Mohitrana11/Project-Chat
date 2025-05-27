@@ -4,7 +4,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const { cookieOption } = require("../constants/options");
 const sendEmail = require("../utils/sendEmail");
 
-// [Register User] -----------------------------------------
+// [Register User]----------------------------------------
 const register = catchAsyncErrors(async (req, res, next) => {
   const { email, username, password, avatar } = req.body;
 
@@ -34,7 +34,7 @@ const register = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// [Login User] -----------------------------------------
+// [Login User] ------------------------------------------
 const login = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -59,7 +59,7 @@ const login = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// [Logout User] -----------------------------------------
+// [Logout User] ------------------------------------------
 const logout = catchAsyncErrors(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
@@ -83,11 +83,11 @@ const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// [Get User All Details]---------------------------------------
+// [Get User All Details]-----------------------------------
 const usersDetails = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find({
     _id: { $ne: req.user._id },
-  });
+  }).lean();
   res.status(200).json({
     success: true,
     users,
@@ -123,7 +123,7 @@ const resetPassword = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// [Request Password Reset]---------------------------------------
+// [Request Password Reset]---------------------------------
 const requestPasswordReset = catchAsyncErrors(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
