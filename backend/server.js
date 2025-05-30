@@ -9,7 +9,7 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-// Start the server
+// Start the server:
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);
 });
