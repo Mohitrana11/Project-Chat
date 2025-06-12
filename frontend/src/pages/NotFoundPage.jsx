@@ -4,7 +4,7 @@ const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-full relative min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 flex items-center justify-center px-6 overflow-hidden">
+    <div className="w-full h-full relative min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 flex items-center justify-center px-6 overflos-hidden z-50">
       <svg
         className="absolute opacity-10 w-96 h-96 text-white transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 select-none pointer-events-none"
         fill="none"

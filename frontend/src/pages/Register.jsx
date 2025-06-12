@@ -40,7 +40,7 @@ function Register() {
     }
   }, [isError, isSuccess, message]);
   return (
-    <div className="w-full h-screen bg-gray-100 flex items-center justify-center overflow-hidden">
+    <div className="fixed w-full h-screen bg-gray-100 flex items-center justify-center overflow-hidden z-90">
       <div className="hidden md:flex">
         <img src={register} alt="Registration" className="w-full h-full" />
       </div>

@@ -1,0 +1,41 @@
+.chat-heading {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.chat-users {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.chat-window {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+/* [Search container]------------------------------- */
+.search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 95%;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px 5px;
+  font-size: 22px;
+  margin: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  padding-left: 10px;
+  padding-right: 20px;
+}
+
+.search-container form {
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.search-container input {
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 0px 10px;
+}

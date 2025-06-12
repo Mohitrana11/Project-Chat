@@ -29,18 +29,17 @@ function Login() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (isError) {
-      toast.error(message || "Something went wrong");
-    }
-
     if (isSuccess) {
       toast.success(message || "Login Successful!");
       navigate("/");
     }
+    if (isError) {
+      toast.error(message || "Something went wrong");
+    }
   }, [isError, isSuccess, message]);
 
   return (
-    <div className="w-full h-screen bg-gray-100 flex items-center justify-center px-4 py-4 overflow-hidden">
+    <div className="fixed w-full h-screen bg-gray-100 flex items-center justify-center px-4 py-4 overflow-hidden z-90 ">
       <div className="hidden md:flex">
         <img src={login} alt="Login" className="w-full h-full" />
       </div>
