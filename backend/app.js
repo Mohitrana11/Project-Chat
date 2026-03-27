@@ -14,21 +14,17 @@ app.use(cors());
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.send("Some Data is here");
-});
-
 // User Routers:
-const userRoutes = require("./routers/userRoutes");
-app.use("/api/v1/user", userRoutes);
+// const userRoutes = require("./routers/userRoutes");
+// app.use("/api/v1/user", userRoutes);
 
-// Message Router:
-const messageRouter = require("./routers/message");
-app.use("/api/v1/message", messageRouter);
+// // Message Router:
+// const messageRouter = require("./routers/message");
+// app.use("/api/v1/message", messageRouter);
 
-// Chat Routes:
-const chatRoutes = require("./routers/chatRouters");
-app.use("/api/v1/chats", chatRoutes);
+// // Chat Routes:
+// const chatRoutes = require("./routers/chatRouters");
+// app.use("/api/v1/chats", chatRoutes);
 
 // Search Routes
 // const searchRouter = require("./routers/searchUser");
